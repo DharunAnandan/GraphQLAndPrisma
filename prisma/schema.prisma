@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type PetitionsAssign {
+  assignedTo      String?
+  disposal        String
+  locationOfServe String?
+  rank            String?
+}
+
+type PetitionsPdfFile {
+  data Bytes?
+  /// Multiple data types found: String: 40%, Binary: 60% out of 25 sampled entries
+  iv   Json?
+}
+
+model Petitions {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  v              Int             @map("__v")
+  assign         PetitionsAssign
+  createdAt      DateTime        @db.Date
+  discription    String
+  fileName       String
+  /// Multiple data types found: Float: 88.7%, Int: 11.3% out of 62 sampled entries
+  mobile         Json            @unique(map: "mobile_1")
+  nameByUpload   String?
+  /// Multiple data types found: Binary: 55.7%, PetitionsPdfFile: 44.3% out of 61 sampled entries
+  pdfFile        Json?
+  petitionId     String          @unique(map: "petitionId_1")
+  petitionStatus String
+  petitionType   String
+  petitionerName String
+  subject        String
+  updatedAt      DateTime        @db.Date
+}
+
+model Users {
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  v                   Int?      @map("__v")
+  createdAt           DateTime? @db.Date
+  email               String    @unique(map: "email_1")
+  gender              String?
+  locationOfServe     String?
+  mobile              String?
+  name                String
+  password            String?
+  rank                String?
+  station_name        String?
+  station_place       String?
+  subDivision_splUnit String?
+  subDivisoin_splUnit String?
+  unit                String?
+  updatedAt           DateTime? @db.Date
+}
+
+model sessions {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  /// Field referred in an index, but found no data to define the type.
+  expires Json?
+
+  @@index([expires], map: "expires_1")
+}
