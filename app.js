@@ -91,6 +91,12 @@ app.use('/graphql', graphqlHTTP({
   rootValue: root,
 }));
 
+app.get('/', (req, res) => {
+  res.redirect('/graphql');
+});
+
 app.listen(3000, () => {
   console.log("Running on port 3000");
 });
+
+//node app.js
